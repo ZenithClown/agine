@@ -4,4 +4,6 @@ import warnings
 
 class LimitedFunctionality(Warning):
 	"""Warning is Raised when Limited-Working Functionality is Available"""
-	pass
+
+class TypeWarning(Warning):
+	"""Warning is Raised if any of the argument-type is Wrong, but can be Fixed"""

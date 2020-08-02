@@ -21,9 +21,21 @@ class _env_setup:
 		self.OSName    = system()
 		self.OSVersion = release()
 
+		self.point_func = ['pandas', 'fiona', 'shapely', 'geopandas']
+		self.line_of_st = ['rasterio']
+
+	@property
+	def _point_func(self):
+		return self.point_func
+
+	@property
+	def _line_of_st(self):
+		return self.line_of_st
+	
+
 	@property
 	def is_threading_possible(self):
-		if 'lin' in self.OSName.lower():
+		if 'linux' in self.OSName.lower():
 			return True
 		elif 'darwin' in self.OSName.lower():
 			return True
@@ -38,14 +50,19 @@ class _env_setup:
 		except ImportError:
 			return False
 
+	@property
+	def is_sklearn_available(self):
+		try:
+			__import__('sklearn')
+			return True
+		except ImportError:
+			return False
+
 	def module_functionality(self):
 		__global_options__ = ['point-function', 'line-of-sight']
 		# Check what are the available pkgs - on which global-functionality is set
-		point_func = ['pandas', 'fiona', 'shapely', 'geopandas']
-		line_of_st = ['rasterio']
-
 		AVLBL_OPTIONS = ['commons']
-		for opts, libs in zip(__global_options__, [point_func, line_of_st]):
+		for opts, libs in zip(__global_options__, [self.point_func, self.line_of_st]):
 			_check = check_imports(libs)
 			if not _check:
 				AVLBL_OPTIONS.append(opts)

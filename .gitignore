@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# unititled file under docs is for testing only
+docs/Untitled.ipynb

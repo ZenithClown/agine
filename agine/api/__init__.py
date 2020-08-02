@@ -6,6 +6,7 @@
 from .OSOptions import OSOptions
 AVLBL_OPTIONS = OSOptions.module_functionality()
 print(f'\tDetected OS            : {OSOptions.OSName}-{OSOptions.OSVersion}')
+print(f'\tscikit-learn Options   : {OSOptions.is_sklearn_available}')
 print(f'\tThreading Availibilty  : {OSOptions.is_threading_possible}')
 print(f'\tTensorflow Availibilty : {OSOptions.is_tensorflow_available}')
 
