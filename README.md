@@ -12,13 +12,12 @@
 <p align="justify">agine has <b>three</b> main functionalities: (1) Calculation of Distances, using different metrics, which is defined under <code>commons</code>, (2) Functions to Find the Nearest Neighbor and (3) Function to Find if two Geographic Point has a <i>Line-of-Sight</i> or not. All of this can be done using the following:</p>
 
 ```python
-pip install -e agine # Installing agine with pip
+pip install agine # Installing agine with pip
 import agine
-
-	>> Setting up agine-Environment...
-	>>   Detected OS            : "<os-name-with-version>"
-	>>   scikit-learn Options   : "<is-scikit-learn-available>"
-	>>   "etc. which Defines the Core-Capability"
+>> Setting up agine-Environment...
+>>   Detected OS            : "<os-name-with-version>"
+>>   scikit-learn Options   : "<is-scikit-learn-available>"
+>>   "etc. which Defines the Core-Capability"
 ```
 
 <p align="justify">agine has a hard dependency of only <code>numpy</code> so that some of its functionalities can be used somewhere else. For options (2) and (3) it has different requirements, which can be accessed using: <code>agine.OSOptions._point_func</code> and <code>agine.OSOptions._line_of_st</code> repectively.</p>
