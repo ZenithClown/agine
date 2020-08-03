@@ -130,3 +130,4 @@ dmypy.json
 
 # unititled file under docs is for testing only
 docs/Untitled.ipynb
+*.csv

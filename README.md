@@ -1,6 +1,5 @@
 <h1 align="center">agine <br>
 <a href="https://github.com/ZenithClown/agine/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/ZenithClown/agine?style=plastic"></a>
-<a href="https://twitter.com/intent/tweet?text=Wow:&url=https%3A%2F%2Fgithub.com%2FZenithClown%2Fagine"><img alt="Twitter" src="https://img.shields.io/twitter/url?label=dPramanik&logo=linkedin&style=plastic&url=https%3A%2F%2Fwww.linkedin.com%2Fin%2Fdpramanik%2F"></a>
 </h1>
 
 <p align="justify"><i>agine</i> is a Python package which have functionalities related to points in an n-dimensional space (which is defined by its <code>x, y, ...z</code> coordinates), or an actual position on the Earth (given by its <code>latitude, longitude</code>). Considering two points (<code>say P, Q</code>), apart from many other purposes, this library can also detect if the two have a clear line of sight or not. <br>

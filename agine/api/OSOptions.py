@@ -21,8 +21,8 @@ class _env_setup:
 		self.OSName    = system()
 		self.OSVersion = release()
 
-		self.point_func = ['pandas', 'fiona', 'shapely', 'geopandas']
-		self.line_of_st = ['rasterio']
+		self.point_func = ['pandas', 'fiona', 'shapely', 'pyproj', 'geopandas']
+		self.line_of_st = self.point_func + ['rasterio']
 
 	@property
 	def _point_func(self):

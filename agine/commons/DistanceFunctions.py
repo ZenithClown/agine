@@ -39,8 +39,8 @@ def ManhattanDistance(startPoint : np.ndarray, targetPoint : np.ndarray) -> floa
 def HaversineDistance(startPoint : list, targetPoint : list, **kwargs) -> float:
 	'''Calculate Haversine Distance
 
-	: param startPoint  : Starting Point (P)
-	: param targetPoint : Target Point, or Point-Q
+	: param startPoint  : Starting Point (P). Format [longitude, latitude]
+	: param targetPoint : Target Point, or Point-Q. Format [longitude, latitude]
 
 	Keyword Arguments
 	-----------------
