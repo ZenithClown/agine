@@ -16,3 +16,6 @@ class DuplicateRecords(Warning):
 
 class ZeroDistanceNeighbor(Warning):
 	"""Warning is Raised if the Neighbor is at 0 units Distance from Parent"""
+
+class ValueWarning(Warning):
+	"""A Raised ValueError which is taken-cared by str()/other Parsing Methods"""

@@ -13,7 +13,7 @@ from ..libs import *
 from ..config import UNITS, CRS, METRICS
 from ..commons.DistanceFunctions import HaversineDistance
 from ..commons.GeographicalFunctions import create_circle_polygon
-from ..exceptions import EncounteredNaN, DuplicateRecords, ZeroDistanceNeighbor
+from ..exceptions import EncounteredNaN, DuplicateRecords, ZeroDistanceNeighbor, ValueWarning
 
 ### --- Helper Function(s) --- ###
 def _type_of_comparison(data):
@@ -53,6 +53,33 @@ def _validate_data(_check_data):
 		warnings.warn(f'Encounterd {dSize - _check_data.shape[0]} Duplicate-Values, Removed from Analysis', DuplicateRecords)
 
 	return _check_data
+
+def _generate_polygon_data(data, loc, max_dist_arr):
+	'''Generate Polygon-Data with gpd.GeoDataFrame()'''
+	_vals = np.array(list(data[loc].values))
+
+	try:
+		_circle_polygon = list(map(create_circle_polygon, _vals[:, 0], _vals[:, 1], max_dist_arr))
+	except ValueError as err:
+		raise ValueError(f'Possibly Data contains NaN\n{err}')
+	except RuntimeError as err:
+		# https://github.com/pyproj4/pyproj/issues/202
+		# Err. Msg. : RuntimeError: b'tolerance condition error'
+		raise RuntimeError(f'PyProj version <= 1.9.6 behaves differently than >= 2.1.0\n{err}')
+
+	data['polygons'] = _circle_polygon
+	_PolygonData = deepcopy(gpd.GeoDataFrame(data, crs = CRS, geometry = data['polygons']))
+	data.drop(columns = ['polygons'], inplace = True)
+
+	return _PolygonData
+
+def _generate_point_data(data, loc):
+	'''Generate Point-Data with gpd.GeoDataFrame()'''
+	data['points'] = data[loc].apply(lambda x: Point(x[0], x[1]))
+	_PointData = deepcopy(gpd.GeoDataFrame(data, crs = CRS, geometry = data['points']))
+	data.drop(columns = ['points'], inplace = True)
+
+	return _PointData
 
 ### --- Main Functions --- ###
 def NearestNeighbor (
@@ -99,6 +126,12 @@ def NearestNeighbor (
 		: param UIN : Default 'UIN'
 		: param loc : Default 'loc'
 
+		: param keep_blanks : (bool) Keep UIN which do not have any Neighbor within the Search Radius. Default True
+		                      By Default, for Blank-UINs, the NBR-UIN (with other corresponding values) is set to NaN
+		                      If required, this can be changed by passing a list() as given in fillna-command
+		: param fillna      : (list) fillna values with required value. Format is [bool, '<value>']
+		                      By Default fillna [False, np.nan]
+
 	NOTE: The Entire workflow is with datum = WGS84 i.e. CRS = EPSG:4326 - any other System will/might Create a Problem.
 	NOTE: If the Data contains any illegal chars, it is advised to remove from Analysis, as all the Values are Not Validated.
 	RETURNS : pd.DataFrame of [UIN, loc, f'NBR_{UIN}', f'NBR_{loc}', 'rnk'] # where rnk = Rank is not present for num_nbr = 1
@@ -112,8 +145,8 @@ def NearestNeighbor (
 	if input_unit not in UNITS: raise ValueError(f'input_unit = {input_unit} is not Understood.')
 	if output_unit not in UNITS: raise ValueError(f'output_unit = {output_unit} is not Understood.')
 
-	UIN = kwargs.get('UIN', 'UIN')
-	loc = kwargs.get('loc', 'loc')
+	UIN = kwargs.get('UIN', 'UIN') # the value can be anything
+	loc = kwargs.get('loc', 'loc') # the value can be anything
 
 	point_type  = kwargs.get('point_type', 'geo-loc')
 
@@ -126,53 +159,36 @@ def NearestNeighbor (
 
 	if dist_metric not in METRICS: raise ValueError(f'dist_metric = {dist_metric} is not Understood.')
 
+	keep_blanks = kwargs.get('keep_blanks', True)
+	fillna      = kwargs.get('fillna', [False, np.nan])
+
 	### --- Minimal Validation of Data --- ###
 	timer = profilingFunction(funcName = 'Generating shapely Objects')
 	if _exec_type == 'single_file':
 		data = _validate_data(data) # Validating Records
+		max_dist_arr = [max_dist * 1000 for _ in range(data.shape[0])]
 
-		### --- create_circle_polygon --- ###
-		_vals = np.array(list(data[loc].values))
-		_circle_polygon = list(map(create_circle_polygon, _vals[:, 0], _vals[:, 1]))
-		data['polygons'] = _circle_polygon
-
-		PolygonData = gpd.GeoDataFrame(data, crs = CRS, geometry = data['polygons'])
-
-		### --- create_points --- ###
-		data['points'] = data[loc].apply(lambda x: Point(x[0], x[1]))
-		PointData = gpd.GeoDataFrame(data, crs = CRS, geometry = data['points'])
-
-		del _vals, _circle_polygon, data
-		PointData.drop(columns = ['points', 'polygons'], inplace = True)
-		PolygonData.drop(columns = ['points', 'polygons'], inplace = True)
+		### --- create_circle_polygon and create_points --- ###
+		PointData = _generate_point_data(data, loc)
+		PolygonData = _generate_polygon_data(data, loc, max_dist_arr)
 
 	elif _exec_type == 'multi_files':
 		FileA = _validate_data(data[0])
 		FileB = _validate_data(data[1])
+		max_dist_arr = [max_dist * 1000 for _ in range(FileA.shape[0])]
 
-		### --- create_circle_polygon --- ###
-		_vals = np.array(list(FileA[loc].values))
-		_circle_polygon = list(map(create_circle_polygon, _vals[:, 0], _vals[:, 1]))
-		FileA['polygons'] = _circle_polygon
-
-		PolygonData = gpd.GeoDataFrame(FileA, crs = CRS, geometry = FileA['polygons'])
-
-		### --- create_points --- ###
-		FileB['points'] = FileB[loc].apply(lambda x: Point(x[0], x[1]))
-		PointData = gpd.GeoDataFrame(FileB, crs = CRS, geometry = FileB['points'])
-
-		del _vals, _circle_polygon, data
-		PointData.drop(columns = ['points', 'polygons'], inplace = True)
-		PolygonData.drop(columns = ['points', 'polygons'], inplace = True)
+		### --- create_circle_polygon and create_points --- ###
+		PointData = _generate_point_data(FileB, loc)
+		PolygonData = _generate_polygon_data(FileA, loc, max_dist_arr)
 
 	timer.checkPoint()
 
 	### --- Generating Neighbors List --- ###
 	timer = profilingFunction(funcName = 'Joining Data with gpd.sjoin()')
 	all_neighbor = gpd.sjoin(PolygonData, PointData, how = 'left', op = 'contains').reset_index()
-	del PolygonData, PointData
+	del PolygonData, PointData # House-Keeping!
 
-	all_neighbor.drop(columns = ['index', 'index_right', 'geometry'], inplace = True)
+	all_neighbor.drop(columns = ['index', 'index_right', 'geometry', 'points', 'polygons'], inplace = True)
 	all_neighbor.rename(columns = {
 			f'{UIN}_left'  : UIN,
 			f'{loc}_left'  : loc,
@@ -183,6 +199,23 @@ def NearestNeighbor (
 	all_neighbor = all_neighbor[all_neighbor[UIN] != all_neighbor[f'NBR_{UIN}']] # Removing Same Site(s)
 	timer.checkPoint()
 
+	### --- keep_blanks Execution --- ###
+	if keep_blanks:
+		print(f'NBR_{UIN} == NaN - denotes a Location w/o a Neighbor')
+		if _exec_type == 'single_file':
+			_blank_UIN = np.setdiff1d(data[UIN].unique(), all_neighbor[UIN].unique())
+			_blank_UIN = data[data[UIN].isin(_blank_UIN)][[UIN, loc]].reset_index()
+
+			del data # data is no Longer Required, clearing Memory!
+		elif _exec_type == 'multi_files':
+			_blank_UIN = np.setdiff1d(FileA[UIN].unique(), all_neighbor[UIN].unique())
+			_blank_UIN = FileA[FileA[UIN].isin(_blank_UIN)][[UIN, loc]].reset_index()
+
+			del data, FileA, FileB # data is no Longer Required, clearing Memory!
+
+		_blank_UIN.drop(columns = ['index'], inplace = True)
+		_blank_UIN['rnk'] = [0] * _blank_UIN.shape[0] # this is essential for Filtering Purposes
+
 	startPoints  = all_neighbor[loc].values
 	targetPoints = all_neighbor[f'NBR_{loc}'].values
 
@@ -190,14 +223,29 @@ def NearestNeighbor (
 	for s, t in TQ(zip(startPoints, targetPoints), desc = f'Calculating Distance with {dist_metric} Metric'):
 		_calculated_distance.append(HaversineDistance(s, t, output_unit = output_unit))
 
-	all_neighbor['Calculated Distance'] = _calculated_distance
-	if all_neighbor['Calculated Distance'].min() == 0:
-		_zero_dist_nbr = all_neighbor[all_neighbor['Calculated Distance'] == 0].shape[0]
-		warnings.warn(f'Found {_zero_dist_nbr} Neighbors at 0 units Distance')
+	all_neighbor[f'Calculated Distance ({output_unit})'] = _calculated_distance
+	if all_neighbor[f'Calculated Distance ({output_unit})'].min() == 0:
+		_zero_dist_nbr = all_neighbor[all_neighbor[f'Calculated Distance ({output_unit})'] == 0].shape[0]
+		warnings.warn(f'Found {_zero_dist_nbr}/{all_neighbor[UIN].nunique()} Neighbors at 0 units Distance')
 
 	timer = profilingFunction(funcName = 'Calculating Ranks')
-	all_neighbor['rnk'] = all_neighbor.groupby([UIN])['Calculated Distance'].rank(method = 'dense')
+	all_neighbor['rnk'] = all_neighbor.groupby([UIN])[f'Calculated Distance ({output_unit})'].rank(method = 'dense')
+	if keep_blanks:
+		all_neighbor = pd.concat([all_neighbor, _blank_UIN], sort = True, ignore_index = True)
 
 	all_neighbor.sort_values(by = [UIN, 'rnk'], inplace = True)
 
-	return all_neighbor
+	if fillna[0]:
+		try:
+			all_neighbor.fillna(fillna[1], inplace = True)
+		except ValueError as err:
+			warnings.warn(f'{fillna[1]} is not accepted for pd.fillna(): {err}. Converting {fillna[1]} to str({fillna[1]})')
+			all_neighbor.fillna(str(fillna[1]), inplace = True)
+
+	all_neighbor = all_neighbor[[UIN, loc, f'NBR_{UIN}', f'NBR_{loc}', f'Calculated Distance ({output_unit})', 'rnk']]
+	timer.checkPoint()
+
+	if num_nbr == 0:
+		return all_neighbor
+
+	return all_neighbor[all_neighbor.rnk <= num_nbr]
