@@ -4,6 +4,7 @@ import warnings
 import numpy as np
 from math import radians
 
+from ..config import R
 from ..api import OSOptions
 from ..exceptions import TypeWarning
 
@@ -47,9 +48,6 @@ def HaversineDistance(startPoint : list, targetPoint : list, **kwargs) -> float:
 		: param input_unit  : (str) Unit of the Latitude and Longitude (in deg or rad). Default 'deg'
 		: param output_unit : (str) Output unit (in rad, m, km). Default 'km'
 	'''
-	R = 6371000 # Radius of the Earth
-
-	# Setting Default kwargs
 	input_unit  = kwargs.get('input_unit', 'deg')
 	output_unit = kwargs.get('output_unit', 'km')
 

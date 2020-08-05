@@ -19,3 +19,6 @@ class ZeroDistanceNeighbor(Warning):
 
 class ValueWarning(Warning):
 	"""A Raised ValueError which is taken-cared by str()/other Parsing Methods"""
+
+class VersionWarning(Warning):
+	"""Warning is Raised when a PKG is available, but does not meet the Min. PKG Version Requirement"""

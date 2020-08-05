@@ -24,6 +24,8 @@ class _env_setup:
 		self.point_func = ['pandas', 'fiona', 'shapely', 'pyproj', 'geopandas']
 		self.line_of_st = self.point_func + ['rasterio']
 
+		self.available_libs = ['numpy']
+
 	@property
 	def _point_func(self):
 		return self.point_func
@@ -31,7 +33,10 @@ class _env_setup:
 	@property
 	def _line_of_st(self):
 		return self.line_of_st
-	
+
+	@property
+	def _available_libs(self):
+		return self.available_libs
 
 	@property
 	def is_threading_possible(self):
@@ -46,6 +51,7 @@ class _env_setup:
 	def is_tensorflow_available(self):
 		try:
 			__import__('tensorflow')
+			self.available_libs.append('tensorflow')
 			return True
 		except ImportError:
 			return False
@@ -54,6 +60,7 @@ class _env_setup:
 	def is_sklearn_available(self):
 		try:
 			__import__('sklearn')
+			self.available_libs.append('sklearn')
 			return True
 		except ImportError:
 			return False
@@ -66,6 +73,7 @@ class _env_setup:
 			_check = check_imports(libs)
 			if not _check:
 				AVLBL_OPTIONS.append(opts)
+				self.available_libs += libs
 			else:
 				warnings.warn(f"{opts} Functionality is NOT Available, as {_check} are Required.", LimitedFunctionality)
 				_input = input('Do you want to Continue? (Y/n) ')

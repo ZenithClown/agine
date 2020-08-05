@@ -62,10 +62,10 @@ def _generate_polygon_data(data, loc, max_dist_arr):
 		_circle_polygon = list(map(create_circle_polygon, _vals[:, 0], _vals[:, 1], max_dist_arr))
 	except ValueError as err:
 		raise ValueError(f'Possibly Data contains NaN\n{err}')
-	except RuntimeError as err:
+	except RuntimeError:
 		# https://github.com/pyproj4/pyproj/issues/202
 		# Err. Msg. : RuntimeError: b'tolerance condition error'
-		raise RuntimeError(f'PyProj version <= 1.9.6 behaves differently than >= 2.1.0\n{err}')
+		raise RuntimeError(f'PyProj version <= 1.9.6 behaves differently than >= 2.1.0')
 
 	data['polygons'] = _circle_polygon
 	_PolygonData = deepcopy(gpd.GeoDataFrame(data, crs = CRS, geometry = data['polygons']))
