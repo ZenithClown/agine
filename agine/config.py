@@ -32,4 +32,4 @@ def _min_ver_required_(lib_name : str) -> list:
 		'geopandas'  : lambda : [0.5, '0.5.0'],
 		# line-of-sight Libraries
 		'rasterio'   : lambda : [1.1, '1.1.2']
-	}.get(lib_name)()
+	}.get(lib_name, lambda : f'{lib_name} is not currently required for agine')()
