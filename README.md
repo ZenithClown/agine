@@ -12,6 +12,11 @@
 
 <p align="justify">agine has <b>three</b> main functionalities: (1) Calculation of Distances, using different metrics, which is defined under <code>commons</code>, (2) Functions to Find the Nearest Neighbor and (3) Function to Find if two Geographic Point has a <i>Line-of-Sight</i> or not. All of this can be done using the following:</p>
 
+```bash
+git clone https://github.com/ZenithClown/agine.git
+cd agine # as agine is currently not indexed in PyPi
+```
+
 ```python
 pip install agine # Installing agine with pip
 import agine
