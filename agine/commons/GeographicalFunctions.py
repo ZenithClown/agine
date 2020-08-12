@@ -26,7 +26,7 @@ def create_circle_polygon(centerLon : int or float, centerLat : int or float, ra
 
 	Returns shapely.Polygon Object
 	'''
-	local_azimuthal_projection = f"+proj=aeqd +R=6371000 +units=m +lat_0={centerLat} +lon_0={centerLon}"
+	local_azimuthal_projection = f"+proj=aeqd +R={R} +units=m +lat_0={centerLat} +lon_0={centerLon}"
 
 	WGS84_to_AEQD = partial( # AEQD = Azimuthal Equidistance Projection
 			pyproj.transform,

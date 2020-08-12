@@ -60,7 +60,7 @@ class _env_setup:
 	def is_sklearn_available(self):
 		try:
 			__import__('sklearn')
-			self.available_libs.append('sklearn')
+			self.available_libs.append('scikit-learn')
 			return True
 		except ImportError:
 			return False
