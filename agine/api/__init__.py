@@ -11,27 +11,29 @@ print(f'\tThreading Availibilty  : {OSOptions.is_threading_possible}')
 print(f'\tTensorflow Availibilty : {OSOptions.is_tensorflow_available}')
 
 ### --- Check Lib-Version Requirement --- ###
-import warnings
-from ..config import _min_ver_required_
-from ..exceptions import VersionWarning, LimitedFunctionality
+# import warnings
+# from ..config import _min_ver_required_
+# from ..exceptions import VersionWarning, LimitedFunctionality
 
-try:
-	import pkg_resources
-	_get_available_libs = OSOptions._available_libs
+# try:
+# 	import pkg_resources
+# 	_get_available_libs = OSOptions._available_libs
+# 	print(f'Available PKGS:      {_get_available_libs}')
+# 	print(f'Available Functions: {AVLBL_OPTIONS}')
 
-	for pkgName in _get_available_libs:
-		_pkgVer_ = pkg_resources.get_distribution(pkgName).version
-		_pkgVerF = float('.'.join(_pkgVer_.split('.')[:2]))
-		_minReq_ = _min_ver_required_(pkgName)
+# 	for pkgName in _get_available_libs:
+# 		_pkgVer_ = pkg_resources.get_distribution(pkgName).version
+# 		_pkgVerF = float('.'.join(_pkgVer_.split('.')[:2]))
+# 		_minReq_ = _min_ver_required_(pkgName)
 
-		if _minReq_[0] > _pkgVerF:
-			warnings.warn(f'{pkgName} Requires {_minReq_[1]} or Above, Got {_pkgVer_}', VersionWarning)
+# 		if _minReq_[0] > _pkgVerF:
+# 			warnings.warn(f'{pkgName} Requires {_minReq_[1]} or Above, Got {_pkgVer_}', VersionWarning)
 
-	del pkg_resources, _get_available_libs, _pkgVer_, _pkgVerF, _minReq_
-except ImportError:
-	warnings.warn('Unable to Check pkg_versions as pkg_resources is unavailable', LimitedFunctionality)
+# 	del pkg_resources, _get_available_libs, _pkgVer_, _pkgVerF, _minReq_
+# except ImportError:
+# 	warnings.warn('Unable to Check pkg_versions as pkg_resources is unavailable', LimitedFunctionality)
 
-del warnings, _min_ver_required_, VersionWarning, LimitedFunctionality
+# del warnings, _min_ver_required_, VersionWarning, LimitedFunctionality
 
 # (1) init-Time Option Registrations
 from ..commons import * # this is alaways Available!

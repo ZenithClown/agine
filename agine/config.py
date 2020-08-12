@@ -23,7 +23,7 @@ def _min_ver_required_(lib_name : str) -> list:
 		'numpy'      : lambda : [1.18, '1.18.1'],
 		# Special Libraries
 		'sklearn'    : lambda : [0.21, '0.21.3'],
-		'tensorflow' : lambda : [2.2, '2.2.0'],
+		'tensorflow' : lambda : [2.2, '2.2.0'], # TensorFlow 1.x has some missing attributes
 		# point_func Libraries
 		'fiona'      : lambda : [1.8, '1.8.6'],
 		'pandas'     : lambda : [0.24, '0.24.2'],
