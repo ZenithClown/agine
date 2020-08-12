@@ -26,8 +26,11 @@ try:
 		_pkgVerF = float('.'.join(_pkgVer_.split('.')[:2]))
 		_minReq_ = _min_ver_required_(pkgName)
 
-		if _minReq_[0] > _pkgVerF:
-			warnings.warn(f'{pkgName} Requires {_minReq_[1]} or Above, Got {_pkgVer_}', VersionWarning)
+		try:
+			if _minReq_[0] > _pkgVerF:
+				warnings.warn(f'{pkgName} Requires {_minReq_[1]} or Above, Got {_pkgVer_}', VersionWarning)
+		except TypeError as err:
+			warnings.warn(f'Unable to Check {pkgName}, got TypeError {err}', LimitedFunctionality)
 
 	del pkg_resources, _get_available_libs, _pkgVer_, _pkgVerF, _minReq_
 except ImportError:
