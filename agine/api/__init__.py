@@ -29,7 +29,7 @@ try:
 		try:
 			if _minReq_[0] > _pkgVerF:
 				warnings.warn(f'{pkgName} Requires {_minReq_[1]} or Above, Got {_pkgVer_}', VersionWarning)
-		except TypeError as err:
+		except TypeError as err: # Required Improvevement, Issue #3
 			warnings.warn(f'Unable to Check {pkgName}, got TypeError {err}', LimitedFunctionality)
 
 	del pkg_resources, _get_available_libs, _pkgVer_, _pkgVerF, _minReq_
