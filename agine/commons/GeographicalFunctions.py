@@ -108,6 +108,8 @@ def calculate_point_at_bearing(point : tuple, distance : int or float, theta : i
 
 	Returns (lon, lat) in Degress
 	'''
+	from ..config import R # Unable to access the value R during import?
+
 	input_unit  = kwargs.get('input_unit', 'deg')
 	output_unit = kwargs.get('output_unit', 'deg')
 
