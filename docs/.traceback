@@ -1,0 +1,101 @@
+(base) debmalya@dPramanik:~/GIT Repo(s)/agine/docs(master)$ sphinx-apidoc -o . ../agine/
+Creating file ./agine.rst.
+Creating file ./agine.api.rst.
+Creating file ./agine.commons.rst.
+Creating file ./agine.core.rst.
+Creating file ./agine.exceptions.rst.
+Creating file ./agine.libs.rst.
+Creating file ./modules.rst.
+(base) debmalya@dPramanik:~/GIT Repo(s)/agine/docs(master)$ make html
+Running Sphinx v3.1.2
+making output directory... done
+building [mo]: targets for 0 po files that are out of date
+building [html]: targets for 8 source files that are out of date
+updating environment: [new config] 8 added, 0 changed, 0 removed
+reading sources... [100%] modules                                                                                                                                        
+/home/debmalya/GIT Repo(s)/agine/docs/agine.rst:22: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.config
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.rst:31: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.api.rst:10: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.api.OSOptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.api.rst:19: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.api
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.commons.rst:10: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.commons.DistanceFunctions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.commons.rst:18: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.commons.GeographicalFunctions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.commons.rst:27: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.commons
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.core.rst:10: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.core.point_function
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.core.rst:19: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.exceptions.rst:7: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.exceptions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.libs.rst:10: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.libs.optimizationFunctions
+   :members:
+   :undoc-members:
+   :show-inheritance:
+/home/debmalya/GIT Repo(s)/agine/docs/agine.libs.rst:19: WARNING: Unknown directive type "automodule".
+
+.. automodule:: agine.libs
+   :members:
+   :undoc-members:
+   :show-inheritance:
+looking for now-outdated files... none found
+pickling environment... done
+checking consistency... done
+preparing documents... done
+writing output... [100%] modules                                                                                                                                         
+generating indices...  genindexdone
+writing additional pages...  searchdone
+copying static files... ... done
+copying extra files... done
+dumping search index in English (code: en)... done
+dumping object inventory... done
+build succeeded, 12 warnings.
+
+The HTML pages are in _build/html.
