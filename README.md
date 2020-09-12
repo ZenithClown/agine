@@ -11,8 +11,7 @@
 	<a href = "https://stackoverflow.com/users/6623589/"><img height="16" width="16" src="https://unpkg.com/simple-icons@v3/icons/stackoverflow.svg"/></a>
 </h1>
 
-<p align="justify"><i>agine</i> is a Python package which have functionalities related to points in an n-dimensional space (which is defined by its <code>x, y, ...z</code> coordinates), or an actual position on the Earth (given by its <code>latitude, longitude</code>). Considering two points (<code>say P, Q</code>), apart from many other purposes, this library can also detect if the two have a clear line of sight or not. <br>
-  <b>NOTE:</b> this package comes with IPython-Notebooks (in <code>docs</code>) which is there to explain some basic stuffs and functionalities related to this library.
+<p align="justify"><i>agine</i> is a Python package which have functionalities related to points in an n-dimensional space (which is defined by its <code>x, y, ...z</code> coordinates), or an actual position on the Earth (given by its <code>latitude, longitude</code>). Considering two points (<code>say P, Q</code>), apart from many other purposes, this library can also detect if the two have a clear line of sight or not.
 </p>
 
 ## Basic Usage
