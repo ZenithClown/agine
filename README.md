@@ -1,6 +1,7 @@
 <h1 align="center">agine <br>
   <a href="https://github.com/ZenithClown/agine/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/ZenithClown/agine?style=plastic"></a>
   <a href="https://github.com/ZenithClown/agine/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/ZenithClown/agine?style=plastic"></a>
+  <a href = "https://pypi.org/project/agine/"><img alt = "PyPI Package" src = "https://img.shields.io/badge/PyPI-0.0.2-blue?style=plastic&logo=pypi"/></a>
   <br>
 <a href = "https://www.linkedin.com/in/dpramanik/"><img height="16" width="16" src="https://unpkg.com/simple-icons@v3/icons/linkedin.svg"/></a>
 <a href = "https://github.com/ZenithClown"><img height="16" width="16" src="https://unpkg.com/simple-icons@v3/icons/github.svg"/></a>
