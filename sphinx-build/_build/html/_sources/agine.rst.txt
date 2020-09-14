@@ -16,14 +16,6 @@ Subpackages
 Submodules
 ----------
 
-agine.conf module
------------------
-
-.. automodule:: agine.conf
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 agine.config module
 -------------------
 
